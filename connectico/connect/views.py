@@ -1,7 +1,6 @@
 from rest_framework import generics, status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
-# from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework.pagination import PageNumberPagination
 from .models import User,FriendRequest
@@ -11,8 +10,6 @@ from django.utils import timezone
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import viewsets
-# import ipdb
-# User = get_user_model()
 
 class UserSignupView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -25,12 +22,9 @@ class UserLoginView(APIView):
     def post(self, request):
         email = request.data.get('email').lower()
         pas = request.data.get('password')
-        print(f"Email: {email}, Password: {pas}")
-        # ipdb.set_trace()
         user = User.objects.filter(email=email, password=pas).first()
         print(user)
         if user:
-            print("ENTERED HERE REY")
             refresh = RefreshToken.for_user(user)
             return Response({
                 'refresh': str(refresh),
